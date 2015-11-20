@@ -7,6 +7,8 @@ module SymmetricFile
   # that uses the same key for both encryption and decryption.
   # 
   class Aes
+    SEPERATOR = "--"
+
     def initialize(key: "1234")
       @key = sha256(key)
     end
@@ -17,15 +19,15 @@ module SymmetricFile
       cipher.key = @key
       iv = cipher.random_iv
       ciphertext = cipher.update(input) + cipher.final
-      cipher_msg = [encode64(iv), encode64(ciphertext)].join('$')
+      cipher_msg = [encode64(iv), encode64(ciphertext)].join(SEPERATOR)
       hmac = calc_hmac(cipher_msg)
-      [encode64(iv), encode64(ciphertext), encode64(hmac)].join("$")
+      [encode64(iv), encode64(ciphertext), encode64(hmac)].join(SEPERATOR)
     end
 
 
     def decrypt(input)
-      iv64, ciphertext64, hmac64 = input.split("$")
-      if calc_hmac(iv64 + "$" + ciphertext64) != decode64(hmac64)
+      iv64, ciphertext64, hmac64 = input.split(SEPERATOR)
+      if calc_hmac(iv64 + SEPERATOR + ciphertext64) != decode64(hmac64)
         raise "HMAC validation failed"
       end
       cipher = OpenSSL::Cipher.new('aes-256-cbc')
