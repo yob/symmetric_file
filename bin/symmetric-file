@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'symmetric_file'
+
+USAGE = "symmetric-file [cat|edit] <path>"
+
+cmd, arg1 = *ARGV
+
+cli = SymmetricFile::Cli.new
+case cmd
+when "cat" then cli.cat(ARGV.last)
+when "edit" then cli.edit(ARGV.last)
+else
+  $stderr.puts USAGE
+  exit(1)
+end
