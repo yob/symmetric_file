@@ -1,7 +1,6 @@
 require 'openssl'
 require 'digest/sha2'
 require 'securerandom'
-require 'base64'
 
 module SymmetricFile
   # Wrapper for openssl for encrypting and decrypting with AES-256, a symmetric cypher
@@ -11,7 +10,7 @@ module SymmetricFile
     SEPERATOR = "--"
 
     def initialize(key: "1234")
-      @key = sha256(key)
+      @key = key
     end
 
     def encrypt(input)
@@ -60,24 +59,5 @@ module SymmetricFile
       cipher.update(ciphertext) + cipher.final
     end
 
-    private
-
-    def decode64(input)
-      Base64.decode64(input)
-    end
-
-    def encode64(input)
-      Base64.encode64(input).strip
-    end
-
-    def calc_hmac(input)
-      OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @key, input)
-    end
-
-    def sha256(phrase)
-      digest = Digest::SHA256.new
-      digest.update(phrase)
-      digest.digest
-    end
   end
 end
