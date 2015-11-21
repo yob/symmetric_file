@@ -1,20 +1,21 @@
+require 'shellwords'
+
 module SymmetricFile
   class MergeCommand
     def initialize(key: nil)
-      @key = key
+      @cipher = SymmetricFile::Aes.new(key: key)
     end
 
-    def run(encrypted_path)
+    def run(mine_path, old_path, yours_path)
       mine = Tempfile.open('mine')
       old = Tempfile.open('old')
       yours = Tempfile.open('yours')
 
       begin
         # decrypt all three of our files
-        cipher = SymmetricFile::Aes.new(key: @key)
-        mine.write cipher.decrypt(File.read(mine_path))
-        old.write cipher.decrypt(File.read(old_path))
-        yours.write cipher.decrypt(File.read(yours_path))
+        mine.write @cipher.decrypt(read_file(mine_path))
+        old.write @cipher.decrypt(read_file(old_path))
+        yours.write @cipher.decrypt(read_file(yours_path))
 
         # flush our io
         mine.flush
@@ -22,9 +23,8 @@ module SymmetricFile
         yours.flush
 
         cmd = "git merge-file -L mine -L old -L yours -p %s %s %s  2>/dev/null" %
-          [ mine.path, old.path, yours.path]
+          [ Shellwords.escape(mine.path), Shellwords.escape(old.path), Shellwords.escape(yours.path)]
 
-        # TODO fix escaping to ensure no security issues
         diff = `#{cmd}`
         conflict = !$?.success?
       ensure
@@ -39,11 +39,10 @@ module SymmetricFile
 
       begin
         # encrypt our diff3 output
-        t.write cipher.encrypt(diff)
+        t.write @cipher.encrypt(diff)
         t.flush
 
-        # and copy that file back to OLDFILE (aka files[1]) since that's where
-        # git expects to find it
+        # and copy that file back to old_path since that's where git expects to find it
         FileUtils.copy t.path, old_path
       ensure
         t.close!
@@ -52,6 +51,14 @@ module SymmetricFile
       # this is important - this exit value is what git uses to decide if there
       # is a conflict or not
       exit (conflict ? 1 : 0)
+    end
+
+    private
+
+    def read_file(path)
+      File.binread(path)
+    rescue Errno::ENOENT
+      raise SymmetricFile::InputError, "file '#{path}' not found"
     end
   end
 end
