@@ -1,13 +1,14 @@
 module SymmetricFile
   class CatCommand
-    def initialize(key: "")
+    def initialize(key: "", output: $stdout)
+      @output = output
       @key = key
     end
 
     def run(encrypted_path)
       data = read_file(encrypted_path)
       cipher = SymmetricFile::Aes.new(key: @key)
-      puts cipher.decrypt(data)
+      @output.puts cipher.decrypt(data)
     end
 
     private
