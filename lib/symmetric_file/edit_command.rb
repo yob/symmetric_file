@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module SymmetricFile
   class EditCommand
     def initialize(key: nil)
@@ -13,8 +15,7 @@ module SymmetricFile
       end
       temp.close(false)
 
-      # TODO escape the path to avoid security issues
-      unless system("vim #{temp.path}")
+      unless system("vim #{Shellwords.escape(temp.path)}")
         raise SymmetricFile::EditError, "User aborted edit"
       end
       File.open(encrypted_path, "wb") do |io|
