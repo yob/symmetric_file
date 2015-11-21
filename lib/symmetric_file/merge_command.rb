@@ -12,9 +12,9 @@ module SymmetricFile
       begin
         # decrypt all three of our files
         cipher = SymmetricFile::Aes.new(key: @key)
-        mine.write cipher.decrypt(::File.read(mine_path))
-        old.write cipher.decrypt(::File.read(old_path))
-        yours.write cipher.decrypt(::File.read(yours_path))
+        mine.write cipher.decrypt(File.read(mine_path))
+        old.write cipher.decrypt(File.read(old_path))
+        yours.write cipher.decrypt(File.read(yours_path))
 
         # flush our io
         mine.flush

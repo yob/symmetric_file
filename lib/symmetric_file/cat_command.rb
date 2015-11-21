@@ -14,7 +14,7 @@ module SymmetricFile
     private
 
     def read_file(path)
-      ::File.binread(path)
+      File.binread(path)
     rescue Errno::ENOENT
       raise SymmetricFile::InputError, "file '#{path}' not found"
     end
