@@ -32,15 +32,15 @@ Like all gems:
 
 This is a command line application. To create a new encypted file, or edit an existing one:
 
-    bundle exec symmetric_file edit config/secrets.yml.enc
+    bundle exec symmetric-file edit config/secrets.yml.enc
 
 To decrypt a file to stdout:
 
-    bundle exec symmetric_file cat config/secrets.yml.enc
+    bundle exec symmetric-file cat config/secrets.yml.enc
 
 To decrypt a file and redirect the output to an unencrypted file:
 
-    bundle exec symmetric_file cat config/secrets.yml.enc > config/secrets.yml
+    bundle exec symmetric-file cat config/secrets.yml.enc > config/secrets.yml
 
 ## Git Integration
 
