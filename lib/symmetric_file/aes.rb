@@ -6,6 +6,18 @@ module SymmetricFile
   # Wrapper for openssl for encrypting and decrypting with AES-256, a symmetric cypher
   # that uses the same key for both encryption and decryption.
   #
+  # The encrypted data follows the RNCryptor format, as  described at:
+  #
+  #   https://github.com/RNCryptor/RNCryptor
+  #
+  # Core attributes are:
+  #
+  #  * AES-256 encryption
+  #  * CBC mode
+  #  * Password stretching with PBKDF2
+  #  * Password salting
+  #  * Random IV
+  #  * Encrypt-then-hash HMAC
   class Aes
 
     def initialize(key: "1234")
