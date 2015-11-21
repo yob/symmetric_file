@@ -5,15 +5,17 @@ module SymmetricFile
     end
 
     def run(encrypted_path)
-      if encrypted_path.nil? || !::File.file?(encrypted_path)
-        $stderr.puts "#{encrypted_path} not found"
-        exit(1)
-      end
+      data = read_file(encrypted_path)
+      cipher = SymmetricFile::Aes.new(key: @key)
+      puts cipher.decrypt(data)
+    end
 
-      ::File.open(encrypted_path, "rb") do |io|
-        file = SymmetricFile::File.new(io, key: @key)
-        puts file.cat
-      end
+    private
+
+    def read_file(path)
+      ::File.binread(path)
+    rescue Errno::ENOENT
+      raise SymmetricFile::InputError, "file '#{path}' not found"
     end
   end
 end
