@@ -10,6 +10,7 @@ cli = SymmetricFile::Cli.new
 case cmd
 when "cat" then cli.cat(ARGV.last)
 when "edit" then cli.edit(ARGV.last)
+when "merge" then cli.merge(ARGV[1], ARGV[2], ARGV[3])
 else
   $stderr.puts USAGE
   exit(1)
