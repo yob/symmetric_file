@@ -30,7 +30,7 @@ module SymmetricFile
       if iv64.nil? || ciphertext64.nil? || hmac64.nil?
         raise InputError, "Input not a recogised format"
       elsif calc_hmac(iv64 + SEPERATOR + ciphertext64) != decode64(hmac64)
-        raise InputError, "HMAC validation failed"
+        raise InputError, "HMAC validation failed. The passphrase may be incorrect or the encrypted message may have been tampered with"
       end
       cipher = OpenSSL::Cipher.new('aes-256-cbc')
       cipher.decrypt
