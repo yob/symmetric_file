@@ -16,7 +16,7 @@ begin
     $stderr.puts USAGE
     exit(1)
   end
-rescue SymmetricFile::InputError => e
+rescue SymmetricFile::InputError, SymmetricFile::EditError => e
   $stderr.puts "ERROR: #{e.message}"
   exit(1)
 end

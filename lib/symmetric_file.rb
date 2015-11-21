@@ -6,4 +6,5 @@ require 'symmetric_file/merge_command'
 
 module SymmetricFile
   InputError = Class.new(StandardError)
+  EditError = Class.new(StandardError)
 end
