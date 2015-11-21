@@ -7,7 +7,6 @@ module SymmetricFile
   # that uses the same key for both encryption and decryption.
   #
   class Aes
-    SEPERATOR = "--"
 
     def initialize(key: "1234")
       @key = key
