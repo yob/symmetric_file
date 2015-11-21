@@ -14,9 +14,9 @@ capable of encrypting any text file.
 The files are enrypted using AES-256 in CBC mode, and use HMAC for message authentication. All encryption
 and signing is performed using the ruby openssl bindings available in the standard library.
 
-symmetric\_file is based on many of the ideas in the dotgpg gem by Conrad Irwin. Smaller teams may
-not need the complexity of gnupg and may be comfortable with the security provided by symmetric encryption
-and a shared password.
+symmetric\_file is based on many of the ideas in the [dotgpg gem](https://rubygems.org/gems/dotgpg) by
+Conrad Irwin. Smaller teams may not need the complexity of gnupg and may be comfortable with the security
+provided by symmetric encryption and a shared password.
 
 ## Installation
 
