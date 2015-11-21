@@ -26,9 +26,11 @@ module SymmetricFile
 
 
     def decrypt(input)
-      iv64, ciphertext64, hmac64 = input.split(SEPERATOR)
-      if calc_hmac(iv64 + SEPERATOR + ciphertext64) != decode64(hmac64)
-        raise "HMAC validation failed"
+      iv64, ciphertext64, hmac64 = input.to_s.split(SEPERATOR)
+      if iv64.nil? || ciphertext64.nil? || hmac64.nil?
+        raise InputError, "Input not a recogised format"
+      elsif calc_hmac(iv64 + SEPERATOR + ciphertext64) != decode64(hmac64)
+        raise InputError, "HMAC validation failed"
       end
       cipher = OpenSSL::Cipher.new('aes-256-cbc')
       cipher.decrypt
