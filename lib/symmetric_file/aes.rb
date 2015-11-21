@@ -18,7 +18,7 @@ module SymmetricFile
       cipher.encrypt
       cipher.key = @key
       iv = cipher.random_iv
-      ciphertext = cipher.update(input) + cipher.final
+      ciphertext = cipher.update(input.to_s) + cipher.final
       cipher_msg = [encode64(iv), encode64(ciphertext)].join(SEPERATOR)
       hmac = calc_hmac(cipher_msg)
       [encode64(iv), encode64(ciphertext), encode64(hmac)].join(SEPERATOR)
