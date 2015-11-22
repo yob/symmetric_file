@@ -4,7 +4,7 @@ module SymmetricFile
   class Cli
 
     def cat(encrypted_path)
-      SymmetricFile::CatCommand.new(key: key).run(encrypted_path)
+      SymmetricFile::CatCommand.new(key: key).run(read_file(encrypted_path))
     end
 
     def edit(encrypted_path)
@@ -16,6 +16,12 @@ module SymmetricFile
     end
 
     private
+
+    def read_file(path)
+      File.binread(path)
+    rescue Errno::ENOENT
+      raise SymmetricFile::InputError, "file '#{path}' not found"
+    end
 
     def key
       @key ||= read_key("Enter key:")
