@@ -45,7 +45,7 @@ To decrypt a file and redirect the output to an unencrypted file:
 ## Git Integration
 
 By default, files encrypted with symmetric\_file don't play well with Git. They're
-base64 encoded, so git will attempt to handle merging the encrypted data and mangle it.
+binary data, so git will not attempt to merge conflicting changes.
 
 symmetric\_file has some helpers that make it possible to merge changes to an encrypted
 file, however it requires some configuration of your git repo.
@@ -54,16 +54,16 @@ First, add a .gitattributes file to the repo with the following content. This fi
 can be tracked in git and shared with collaborators.
 
 ```
-*.enc diff=enc merge=enc
+*.aes diff=aes merge=aes
 ```
 
 Second, edit .git/config and add the following content. This file is specific to the
 local repo and is not shared with collaborators.
 
 ```
-[diff "enc"]
+[diff "aes"]
   textconv = bundle exec symmetric-file cat
-[merge "enc"]
+[merge "aes"]
   name = symmetric-file merge driver
   driver = "bundle exec symmetric-file merge %O %A %B"
 ```
