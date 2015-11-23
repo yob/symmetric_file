@@ -3,7 +3,7 @@ require 'shellwords'
 module SymmetricFile
   class EditCommand
     def initialize(key: nil, editor: nil)
-      @editor ||= "vim"
+      @editor = editor || "vim"
       @cipher = SymmetricFile::Aes.new(key: key)
     end
 
