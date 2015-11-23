@@ -16,7 +16,7 @@ module SymmetricFile
       end
       temp.close(false)
 
-      unless system("#{Shellwords.escape(@editor)} #{Shellwords.escape(temp.path)}")
+      unless system("#{@editor} #{Shellwords.escape(temp.path)}")
         raise SymmetricFile::EditError, "User aborted edit"
       end
       File.open(encrypted_path, "wb") do |io|
