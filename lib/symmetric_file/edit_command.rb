@@ -11,7 +11,8 @@ module SymmetricFile
       temp = Tempfile.new([File.basename(encrypted_path), ".tmp"])
       if File.file?(encrypted_path)
         data = read_file(encrypted_path)
-        temp.write @cipher.decrypt(data)
+        cleartext = @cipher.decrypt(data)
+        temp.write(cleartext)
         temp.flush
       end
       temp.close(false)
@@ -19,8 +20,11 @@ module SymmetricFile
       unless system("#{@editor} #{Shellwords.escape(temp.path)}")
         raise SymmetricFile::EditError, "User aborted edit"
       end
-      File.open(encrypted_path, "wb") do |io|
-        io.write @cipher.encrypt(read_file(temp.path))
+      new_cleartext = read_file(temp.path)
+      if cleartext != new_cleartext
+        File.open(encrypted_path, "wb") do |io|
+          io.write @cipher.encrypt(new_cleartext)
+        end
       end
     ensure
       temp.close! if temp
