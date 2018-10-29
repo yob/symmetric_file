@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.email             = ["james.healy@theconversation.edu.au"]
   s.homepage          = "http://github.com/yob/symmetric_file"
   s.rdoc_options      << "--title" << "SymmetricFile" << "--line-numbers"
-  s.files             =  Dir.glob("{lib,bin}/**/*") + ["README.markdown","MIT-LICENSE","CHANGELOG"]
+  s.files             =  Dir.glob("{lib,bin}/**/*") + ["README.md","MIT-LICENSE","CHANGELOG"]
   s.executables       = ["symmetric-file"]
   s.license           = "MIT"
 
