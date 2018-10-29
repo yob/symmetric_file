@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name              = "symmetric_file"
-  s.version           = "0.1.0"
+  s.version           = "0.1.1"
   s.summary           = "Create and edit encrypted text files"
   s.description       = "Simple management of encrypted text files - particularly useful for use with ruby projects stored in git. Uses AES-CBC with HMAC authentication."
   s.authors           = ["James Healy"]
